@@ -71953,8 +71953,6 @@
 	                $scope.product = product;
 	                $scope.validDiscount = hasDiscount;
 
-	                $scope.validatingPaymentID = 111;
-
 	                $scope.cancel = function () {
 	                    $scope.paymentValidated = false;
 	                    $mdDialog.cancel();
@@ -72388,7 +72386,7 @@
 /***/ function(module, exports) {
 
 	var path = 'components/container.html';
-	var html = "<div>\n    <md-content layout-padding>\n        <div flex-xs flex-gt-xs=\"100\" layout=\"row\">\n            <md-card ng-repeat=\"product in products\">\n                <img ng-src=\"../img/{{product.url}}\" class=\"md-card-image\" alt=\"{{product.name}}\" width=\"100\"/>\n                <md-card-title>\n                    <md-card-title-text>\n                        <span class=\"md-headline\">{{product.name}}</span>\n                    </md-card-title-text>\n                </md-card-title>\n                <md-card-content>\n                    <p>{{product.price}}</p>\n                </md-card-content>\n                <md-card-actions layout=\"row\" layout-align=\"end center\">\n                    <md-button ng-click=\"register(product.id)\">Comprar</md-button>\n                </md-card-actions>\n            </md-card>\n        </div>\n    </md-content>\n</div>";
+	var html = "<div>\n    <md-content layout-padding>\n        <md-toolbar class=\"md-hue-2\">\n            <div class=\"md-toolbar-tools\">\n                <h2 flex md-truncate>Loja de Canecas</h2>\n            </div>\n        </md-toolbar>\n\n        <div flex-xs flex-gt-xs=\"100\" layout=\"row\" layout-align=\"center\">\n            <md-card ng-repeat=\"product in products\">\n                <img ng-src=\"../img/{{product.url}}\" class=\"md-card-image\" alt=\"{{product.name}}\" width=\"100\"/>\n                <md-card-title>\n                    <md-card-title-text>\n                        <span class=\"md-headline\">{{product.name}}</span>\n                    </md-card-title-text>\n                </md-card-title>\n                <md-card-content>\n                    <p>{{product.price | currency:'R$ ':2}}</p>\n                </md-card-content>\n                <md-card-actions layout=\"row\" layout-align=\"end center\">\n                    <md-button ng-click=\"register(product.id)\">Comprar</md-button>\n                </md-card-actions>\n            </md-card>\n        </div>\n    </md-content>\n</div>";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 

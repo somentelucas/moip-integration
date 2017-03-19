@@ -99,8 +99,6 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService, $timeout) =
                 $scope.product = product;
                 $scope.validDiscount = hasDiscount;
 
-                $scope.validatingPaymentID = 111;
-
                 $scope.cancel = () => {
                     $scope.paymentValidated = false;
                     $mdDialog.cancel();

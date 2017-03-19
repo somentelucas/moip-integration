@@ -1,6 +1,12 @@
 <div>
     <md-content layout-padding>
-        <div flex-xs flex-gt-xs="100" layout="row">
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h2 flex md-truncate>Loja de Canecas</h2>
+            </div>
+        </md-toolbar>
+
+        <div flex-xs flex-gt-xs="100" layout="row" layout-align="center">
             <md-card ng-repeat="product in products">
                 <img ng-src="../img/{{product.url}}" class="md-card-image" alt="{{product.name}}" width="100"/>
                 <md-card-title>
@@ -9,7 +15,7 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <p>{{product.price}}</p>
+                    <p>{{product.price | currency:'R$ ':2}}</p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button ng-click="register(product.id)">Comprar</md-button>
