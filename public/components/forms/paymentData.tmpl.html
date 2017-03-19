@@ -13,7 +13,7 @@
         <md-dialog-content class="md-moip-content">
             <form name="cardForm">
 
-                <div ng-hide="validatingPaymentID || paymentValidated">
+                <div ng-hide="validatingPaymentID || paymentValidated || paymentInvalid">
                     <div>
                         <ul>
                             <li class="md-danger" ng-repeat="error in errors">{{error.description}}</li>
@@ -85,21 +85,31 @@
             </form>
 
             <div ng-show="validatingPaymentID">
-                <h3>Estamos validando seu pagamento, aguarde alguns segundos...</h3>
+                <h3 class="md-text-center">Estamos validando seu pagamento, aguarde alguns segundos...</h3>
                 <div layout="row" layout-sm="column" layout-align="space-around">
                     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
                 </div>
             </div>
 
             <div ng-show="paymentValidated">
-                <h3>Pagamento realizado com sucesso</h3>
+                <h3 class="md-text-center">Pagamento realizado com sucesso!</h3>
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-button class="md-primary" ng-click="cancel()">Fechar</md-button>
+                </div>
+            </div>
+
+            <div ng-show="paymentInvalid">
+                <h3 class="md-text-center md-danger">
+                    O pagamento não pôde ser concluído, por favor verifique se há algum problema com
+                    seu cartão e tente realizar o pagamento novamente.
+                </h3>
                 <div layout="row" layout-sm="column" layout-align="space-around">
                     <md-button class="md-primary" ng-click="cancel()">Fechar</md-button>
                 </div>
             </div>
         </md-dialog-content>
 
-        <md-dialog-actions layout="row" class="md-moip-actions" ng-hide="validatingPaymentID || paymentValidated">
+        <md-dialog-actions layout="row" class="md-moip-actions" ng-hide="validatingPaymentID || paymentValidated || paymentInvalid">
             <div>{{product.name}} - {{getProductPrice(product.price) | currency:'R$ ':2}}</div>
             <md-button ng-click="!inProgress && confirmBuy(card)" class="md-primary" ng-disabled="inProgress">
                 {{inProgress ? 'Aguarde...' : 'Comprar'}}

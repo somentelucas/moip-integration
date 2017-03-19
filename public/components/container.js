@@ -175,6 +175,13 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService, $timeout) =
                             $scope.paymentValidated = true;
                         });
                     }
+
+                    if (args.paymentID === $scope.validatingPaymentID && args.event === 'PAYMENT.CANCELLED') {
+                        $timeout(() => {
+                            $scope.validatingPaymentID = null;
+                            $scope.paymentInvalid = true;
+                        });
+                    }
                 });
             };
         }
