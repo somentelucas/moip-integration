@@ -1,0 +1,20 @@
+<div>
+    <md-content layout-padding>
+        <div flex-xs flex-gt-xs="100" layout="row">
+            <md-card ng-repeat="product in products">
+                <img src="../img/caneca1.jpg" class="md-card-image" alt="{{product.name}}" width="100"/>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{product.name}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>{{product.price}}</p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="register(product.id)">Comprar</md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </md-content>
+</div>

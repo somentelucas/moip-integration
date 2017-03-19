@@ -1,0 +1,118 @@
+<md-dialog aria-label="Produto">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Realizar Pedido - {{product.name}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/times.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content class="md-moip-content">
+            <form name="cardForm">
+                <div>
+                    <ul>
+                        <li class="md-danger" ng-repeat="error in errors">{{error.description}}</li>
+                    </ul>
+                </div>
+
+                <md-subheader class="md-primary">Dados Pessoais</md-subheader>
+
+                <div layout-gt-xs="row">
+                    <md-input-container flex="60">
+                        <label>Nome Completo</label>
+                        <input ng-model="user.name" name="name" required>
+                    </md-input-container>
+
+                    <md-input-container flex="40">
+                        <label>Email</label>
+                        <input ng-model="user.email" name="email" required>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-xs="row">
+                    <md-input-container flex="30">
+                        <label>Data de Nasc.</label>
+                        <md-datepicker name="birthDate" ng-model="user.birthDate" md-open-on-focus></md-datepicker>
+                    </md-input-container>
+
+                    <md-input-container flex="10">
+                        <label>DDD</label>
+                        <input ng-model="user.phone.areaCode" name="phone.areaCode">
+                    </md-input-container>
+
+                    <md-input-container flex="20">
+                        <label>Telefone</label>
+                        <input ng-model="user.phone.number" name="phone.number">
+                    </md-input-container>
+
+                    <md-input-container flex="40">
+                        <label>CPF</label>
+                        <input ng-model="user.cpf" name="cpf">
+                    </md-input-container>
+                </div>
+
+                <md-subheader class="md-primary">Endereço de Entrega</md-subheader>
+
+                <div layout-gt-xs="row">
+                    <md-input-container flex="70">
+                        <label>Rua</label>
+                        <input ng-model="user.shippingAddress.street" name="shippingAddress.street">
+                    </md-input-container>
+
+                    <md-input-container flex="30">
+                        <label>Número</label>
+                        <input ng-model="user.shippingAddress.streetNumber" name="shippingAddress.streetNumber">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-xs="row">
+                    <md-input-container flex="50">
+                        <label>Complemento</label>
+                        <input ng-model="user.shippingAddress.complement" name="shippingAddress.complement">
+                    </md-input-container>
+
+                    <md-input-container flex="50">
+                        <label>Bairro</label>
+                        <input ng-model="user.shippingAddress.district" name="shippingAddress.district">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-xs="row">
+                    <md-input-container flex="30">
+                        <label>Cidade</label>
+                        <input ng-model="user.shippingAddress.city" name="shippingAddress.city">
+                    </md-input-container>
+
+                    <md-input-container flex="30">
+                        <label>Estado</label>
+                        <md-select ng-model="user.shippingAddress.state" name="shippingAddress.state">
+                            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+                                {{state.abbrev}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex="40">
+                        <label>CEP</label>
+                        <input ng-model="user.shippingAddress.zipCode" name="shippingAddress.zipCode">
+                    </md-input-container>
+                </div>
+            </form>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" class="md-moip-actions">
+            <md-input-container flex="30" class="md-no-margin">
+                <label>Cupom de Desconto</label>
+                <input ng-model="user.discountWord" ng-change="validateDiscount()" name="shippingAddress.district">
+            </md-input-container>
+            <span flex></span>
+            <div>{{product.name}} - {{getProductPrice(product.price) | currency:'R$ ':2}}</div>
+            <md-button ng-click="!inProgress && progress(user)" class="md-primary" ng-disabled="inProgress">
+                {{inProgress ? 'Aguarde...' : 'Prosseguir'}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
