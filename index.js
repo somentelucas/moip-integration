@@ -7,12 +7,14 @@ var moment = require('moment');
 
 var moip = new Moip('F4YBYJD1FABW192WO6CWREYNOQDMEYJ3', 'EF41KLNBVFACXAFZ5ST421Z878CZSTCAZFDRDOUN', false);
 
+app.set('port', (process.env.PORT || 3000));
+
 app.use(express.static(__dirname + '/public'));
 app.use('/build', express.static(__dirname + '/build'));
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(3000, function () {
+app.listen(app.get('port'), function () {
     console.log('The app is listening on port 3000!');
 });
 
