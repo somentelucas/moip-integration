@@ -23,11 +23,13 @@
     "express": "^4.15.2",
     "file-loader": "^0.10.1",
     "html-loader": "^0.4.5",
+    "http": "^0.0.0",
     "image-webpack-loader": "^3.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.0",
     "node-notifier": "^5.1.2",
     "resolve-url-loader": "^2.0.2",
+    "socket.io": "^1.7.3",
     "url-loader": "^0.5.8"
   },
   "devDependencies": {

@@ -7,8 +7,6 @@ var moment = require('moment');
 
 var moip = new Moip('F4YBYJD1FABW192WO6CWREYNOQDMEYJ3', 'EF41KLNBVFACXAFZ5ST421Z878CZSTCAZFDRDOUN', false);
 
-console.log('auth');
-console.log('Basic ' + (new Buffer('F4YBYJD1FABW192WO6CWREYNOQDMEYJ3' + ':' + 'EF41KLNBVFACXAFZ5ST421Z878CZSTCAZFDRDOUN')).toString('base64'));
 app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(__dirname + '/public'));
@@ -16,9 +14,11 @@ app.use('/build', express.static(__dirname + '/build'));
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(app.get('port'), function () {
+var server = app.listen(app.get('port'), function () {
     console.log('The app is listening on port ', app.get('port'));
 });
+
+var io = require('socket.io').listen(server);
 
 app.get('/', function (req, res) {
     res.render('index.html');
@@ -161,10 +161,22 @@ app.post('/create_payment', function (req, res) {
 });
 
 app.post('/webhooks', function (req, res) {
+    const event = req.body.event;
+    const resource = req.body.resource;
     console.log('===================');
     console.log('RECEIVED A WEBHOOK');
     console.log('===================');
     console.log('\n\n\n');
-    console.log(req);
+    console.log(req.body.event);
+    console.log(req.body.resource.payment.id);
+    console.log(req.body.resource.payment.status);
+    console.log(req.body.resource.payment.events);
     console.log('\n\n\n');
+
+    io.sockets.emit('webhook', {
+        event: event,
+        paymentID: resource.payment.id,
+        paymentStatus: resource.payment.status,
+        events: resource.payment.events
+    });
 });

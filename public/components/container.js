@@ -1,5 +1,8 @@
 import './container.scss';
 import 'angular-i18n/angular-locale_pt-br';
+import io from 'socket.io-client';
+
+const socket = io({secure: true});
 
 module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
     return {
@@ -7,6 +10,11 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
         scope: {},
         templateUrl: require('./container.html'),
         link: ($scope) => {
+
+            socket.on('connect', function(){
+                console.log(socket.id); // 'G5p5...'
+            });
+
             $scope.products = ProductService.get();
 
             // Abrir formulário de criação do pedido
@@ -154,6 +162,11 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                         $scope.inProgress = false;
                     }
                 };
+
+                socket.on('webhook', (args1, args2) => {
+                    console.log(args1);
+                    console.log(args2);
+                });
             };
         }
     }
