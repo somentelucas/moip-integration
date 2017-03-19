@@ -7,6 +7,8 @@ var moment = require('moment');
 
 var moip = new Moip('F4YBYJD1FABW192WO6CWREYNOQDMEYJ3', 'EF41KLNBVFACXAFZ5ST421Z878CZSTCAZFDRDOUN', false);
 
+console.log('auth');
+console.log('Basic ' + (new Buffer('F4YBYJD1FABW192WO6CWREYNOQDMEYJ3' + ':' + 'EF41KLNBVFACXAFZ5ST421Z878CZSTCAZFDRDOUN')).toString('base64'));
 app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(__dirname + '/public'));
@@ -15,7 +17,7 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(app.get('port'), function () {
-    console.log('The app is listening on port 3000!');
+    console.log('The app is listening on port ', app.get('port'));
 });
 
 app.get('/', function (req, res) {
@@ -156,4 +158,13 @@ app.post('/create_payment', function (req, res) {
         }).catch(function (err) {
             res.send({ errors: err });
         }).catch(console.error.bind(console));
+});
+
+app.post('/webhooks', function (req, res) {
+    console.log('===================');
+    console.log('RECEIVED A WEBHOOK');
+    console.log('===================');
+    console.log('\n\n\n');
+    console.log(req);
+    console.log('\n\n\n');
 });

@@ -123,6 +123,7 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
 
                     // Se o cartão é válido, chamar API para criar pagamento
                     if (cc.isValid()) {
+                        $scope.errors = null;
                         ApiService.post('/create_payment', { hash: cc.hash(), orderID, holder: card.holder })
                             .then((response) => {
                                 console.log(response);
