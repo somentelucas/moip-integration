@@ -4,17 +4,14 @@ import io from 'socket.io-client';
 
 const socket = io({secure: true});
 
-module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
+module.exports = ($rootScope, $mdDialog, ApiService, ProductService, $timeout) => {
     return {
         restrict: 'E',
         scope: {},
         templateUrl: require('./container.html'),
         link: ($scope) => {
 
-            socket.on('connect', function(){
-                console.log(socket.id); // 'G5p5...'
-            });
-
+            // Obtendo a lista de produtos
             $scope.products = ProductService.get();
 
             // Abrir formulário de criação do pedido
@@ -102,6 +99,8 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                 $scope.product = product;
                 $scope.validDiscount = hasDiscount;
 
+                $scope.validatingPaymentID = 111;
+
                 $scope.cancel = () => {
                     $scope.paymentValidated = false;
                     $mdDialog.cancel();
@@ -139,7 +138,9 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                                 $scope.inProgress = false;
 
                                 // Guardando o ID do pagamento para poder validar o webhooks recebido
-                                $scope.validatingPaymentID = response.payment.id;
+                                $timeout(() => {
+                                    $scope.validatingPaymentID = response.payment.id;
+                                });
 
                                 // Exibir erros caso API tenha retornado algum
                                 if (response.errors) {
@@ -167,11 +168,14 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                     }
                 };
 
+                // Listener para websocket de webhook
                 socket.on('webhook', (args) => {
                     console.log(args);
                     if (args.paymentID === $scope.validatingPaymentID && args.event === 'PAYMENT.AUTHORIZED') {
-                        $scope.validatingPaymentID = null;
-                        $scope.paymentValidated = true;
+                        $timeout(() => {
+                            $scope.validatingPaymentID = null;
+                            $scope.paymentValidated = true;
+                        });
                     }
                 });
             };

@@ -4,94 +4,102 @@
             <div class="md-toolbar-tools">
                 <h2>Realizar Pagamento - {{product.name}}</h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
+                <md-button class="md-icon-button" ng-click="cancel()" ng-hide="validatingPaymentID">
                     <md-icon md-svg-src="img/icons/times.svg" aria-label="Close dialog"></md-icon>
                 </md-button>
             </div>
         </md-toolbar>
 
         <md-dialog-content class="md-moip-content">
-            <form name="cardForm" ng-hide="validatingPaymentID">
-                <div>
-                    <ul>
-                        <li class="md-danger" ng-repeat="error in errors">{{error.description}}</li>
-                    </ul>
+            <form name="cardForm">
+
+                <div ng-hide="validatingPaymentID">
+                    <div>
+                        <ul>
+                            <li class="md-danger" ng-repeat="error in errors">{{error.description}}</li>
+                        </ul>
+                    </div>
+
+                    <md-subheader class="md-primary">Dados de Pagamento</md-subheader>
+
+                    <div layout-gt-xs="row">
+                        <md-input-container flex="25">
+                            <label>Númeor do Cartão</label>
+                            <input ng-model="card.number" name="cardNumber" required>
+                        </md-input-container>
+
+                        <md-input-container flex="25">
+                            <label>Código de Segurança</label>
+                            <input ng-model="card.securityNumber" name="securityNumber" required>
+                        </md-input-container>
+
+                        <md-input-container flex="25">
+                            <label>Mês de expiração (MM)</label>
+                            <input ng-model="card.expirationMonth" name="expirationMonth" required>
+                        </md-input-container>
+
+                        <md-input-container flex="25">
+                            <label>Ano de expiração (YYYY)</label>
+                            <input ng-model="card.expirationYear" name="expirationYear" required>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-xs="row">
+                        <md-input-container flex="40">
+                            <label>Nome (como no cartão)</label>
+                            <input ng-model="card.holder.fullname" name="fullname" required>
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                            <label>Data de Nasc.</label>
+                            <md-datepicker ng-model="card.holder.birthDate"  name="birthDate" md-open-on-focus required></md-datepicker>
+                        </md-input-container>
+
+                        <md-input-container flex="30">
+                            <label>CPF</label>
+                            <input ng-model="card.holder.cpf" name="cpf" required>
+                        </md-input-container>
+
+                        <md-input-container flex="5">
+                            <label>DDD</label>
+                            <input ng-model="card.holder.phone.areaCode" name="phone.areaCode">
+                        </md-input-container>
+
+                        <md-input-container flex="15">
+                            <label>Telefone</label>
+                            <input ng-model="card.holder.phone.number" name="phone.number">
+                        </md-input-container>
+                    </div>
+
+                    <textarea id="public-key" class="ng-hide">-----BEGIN PUBLIC KEY-----
+                                                                MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlZs58+RmK906icV5YwYT
+                                                                U2isJyAU9g/X/rKtEUToMUiC5YDD+YK2BMI2590Fx3Y5sjaMwW+ReLXY/a/uM6s+
+                                                                vj6rZvyQk4YR/ax8OoBojJgHE3R/NgZ+ZYJfR52cLh5y16N1HP+dUtwcXRYbsro3
+                                                                xtPCDLslefWyJ1zdk5u6UTHH8mNH4H4jISdHQxEagvfr4FTnPIgYG/PBJgYCbvwf
+                                                                EpFgnxoEsOPsyQHUBDl6/kHksdEwhfvx2V1s4OeUyZYuHMiIziQwsHFleU0tNJ9y
+                                                                69v0oK2Rotb02Gb+2fjCmcAldQKEec4veIyahufJTAK5PVY+wICJ3Gm6Ix3ZUeWp
+                                                                qwIDAQAB
+                                                                -----END PUBLIC KEY-----
+                    </textarea>
                 </div>
-
-                <md-subheader class="md-primary">Dados de Pagamento</md-subheader>
-
-                <div layout-gt-xs="row">
-                    <md-input-container flex="25">
-                        <label>Númeor do Cartão</label>
-                        <input ng-model="card.number" name="cardNumber" required>
-                    </md-input-container>
-
-                    <md-input-container flex="25">
-                        <label>Código de Segurança</label>
-                        <input ng-model="card.securityNumber" name="securityNumber" required>
-                    </md-input-container>
-
-                    <md-input-container flex="25">
-                        <label>Mês de expiração (MM)</label>
-                        <input ng-model="card.expirationMonth" name="expirationMonth" required>
-                    </md-input-container>
-
-                    <md-input-container flex="25">
-                        <label>Ano de expiração (YYYY)</label>
-                        <input ng-model="card.expirationYear" name="expirationYear" required>
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-xs="row">
-                    <md-input-container flex="40">
-                        <label>Nome (como no cartão)</label>
-                        <input ng-model="card.holder.fullname" name="fullname" required>
-                    </md-input-container>
-
-                    <md-input-container flex="50">
-                        <label>Data de Nasc.</label>
-                        <md-datepicker ng-model="card.holder.birthDate"  name="birthDate" md-open-on-focus required></md-datepicker>
-                    </md-input-container>
-
-                    <md-input-container flex="30">
-                        <label>CPF</label>
-                        <input ng-model="card.holder.cpf" name="cpf" required>
-                    </md-input-container>
-
-                    <md-input-container flex="5">
-                        <label>DDD</label>
-                        <input ng-model="card.holder.phone.areaCode" name="phone.areaCode">
-                    </md-input-container>
-
-                    <md-input-container flex="15">
-                        <label>Telefone</label>
-                        <input ng-model="card.holder.phone.number" name="phone.number">
-                    </md-input-container>
-                </div>
-
-                <textarea id="public-key" class="ng-hide">-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlZs58+RmK906icV5YwYT
-U2isJyAU9g/X/rKtEUToMUiC5YDD+YK2BMI2590Fx3Y5sjaMwW+ReLXY/a/uM6s+
-vj6rZvyQk4YR/ax8OoBojJgHE3R/NgZ+ZYJfR52cLh5y16N1HP+dUtwcXRYbsro3
-xtPCDLslefWyJ1zdk5u6UTHH8mNH4H4jISdHQxEagvfr4FTnPIgYG/PBJgYCbvwf
-EpFgnxoEsOPsyQHUBDl6/kHksdEwhfvx2V1s4OeUyZYuHMiIziQwsHFleU0tNJ9y
-69v0oK2Rotb02Gb+2fjCmcAldQKEec4veIyahufJTAK5PVY+wICJ3Gm6Ix3ZUeWp
-qwIDAQAB
------END PUBLIC KEY-----
-                </textarea>
             </form>
 
             <div ng-show="validatingPaymentID">
                 <h3>Estamos validando seu pagamento, aguarde alguns segundos...</h3>
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+                </div>
             </div>
 
             <div ng-show="paymentValidated">
                 <h3>Pagamento realizado com sucesso</h3>
-                <md-button class="md-primary" ng-click="cancel()">Fechar</md-button>
+                <div layout="row" layout-sm="column" layout-align="space-around">
+                    <md-button class="md-primary" ng-click="cancel()">Fechar</md-button>
+                </div>
             </div>
         </md-dialog-content>
 
-        <md-dialog-actions layout="row" class="md-moip-actions">
+        <md-dialog-actions layout="row" class="md-moip-actions" ng-hide="validatingPaymentID || paymentValidated">
             <div>{{product.name}} - {{getProductPrice(product.price) | currency:'R$ ':2}}</div>
             <md-button ng-click="!inProgress && confirmBuy(card)" class="md-primary" ng-disabled="inProgress">
                 {{inProgress ? 'Aguarde...' : 'Comprar'}}

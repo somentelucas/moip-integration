@@ -2,7 +2,7 @@
     <md-content layout-padding>
         <div flex-xs flex-gt-xs="100" layout="row">
             <md-card ng-repeat="product in products">
-                <img src="../img/caneca1.jpg" class="md-card-image" alt="{{product.name}}" width="100"/>
+                <img ng-src="../img/{{product.url}}" class="md-card-image" alt="{{product.name}}" width="100"/>
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">{{product.name}}</span>
