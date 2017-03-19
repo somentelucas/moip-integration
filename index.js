@@ -163,6 +163,7 @@ app.post('/create_payment', function (req, res) {
 app.post('/webhooks', function (req, res) {
     const event = req.body.event;
     const resource = req.body.resource;
+
     console.log('===================');
     console.log('RECEIVED A WEBHOOK');
     console.log('===================');
@@ -179,4 +180,6 @@ app.post('/webhooks', function (req, res) {
         paymentStatus: resource.payment.status,
         events: resource.payment.events
     });
+
+    res.send({ success: true });
 });

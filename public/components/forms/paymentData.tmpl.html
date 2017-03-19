@@ -11,7 +11,7 @@
         </md-toolbar>
 
         <md-dialog-content class="md-moip-content">
-            <form name="cardForm">
+            <form name="cardForm" ng-hide="validatingPaymentID">
                 <div>
                     <ul>
                         <li class="md-danger" ng-repeat="error in errors">{{error.description}}</li>
@@ -80,6 +80,15 @@ qwIDAQAB
 -----END PUBLIC KEY-----
                 </textarea>
             </form>
+
+            <div ng-show="validatingPaymentID">
+                <h3>Estamos validando seu pagamento, aguarde alguns segundos...</h3>
+            </div>
+
+            <div ng-show="paymentValidated">
+                <h3>Pagamento realizado com sucesso</h3>
+                <md-button class="md-primary" ng-click="cancel()">Fechar</md-button>
+            </div>
         </md-dialog-content>
 
         <md-dialog-actions layout="row" class="md-moip-actions">

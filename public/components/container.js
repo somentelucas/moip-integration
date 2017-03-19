@@ -103,6 +103,7 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                 $scope.validDiscount = hasDiscount;
 
                 $scope.cancel = () => {
+                    $scope.paymentValidated = false;
                     $mdDialog.cancel();
                 };
 
@@ -137,6 +138,9 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                                 console.log(response);
                                 $scope.inProgress = false;
 
+                                // Guardando o ID do pagamento para poder validar o webhooks recebido
+                                $scope.validatingPaymentID = response.payment.id;
+
                                 // Exibir erros caso API tenha retornado algum
                                 if (response.errors) {
                                     $scope.errors = response.errors.errors;
@@ -163,9 +167,12 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService) => {
                     }
                 };
 
-                socket.on('webhook', (args1, args2) => {
-                    console.log(args1);
-                    console.log(args2);
+                socket.on('webhook', (args) => {
+                    console.log(args);
+                    if (args.paymentID === $scope.validatingPaymentID && args.event === 'PAYMENT.AUTHORIZED') {
+                        $scope.validatingPaymentID = null;
+                        $scope.paymentValidated = true;
+                    }
                 });
             };
         }
