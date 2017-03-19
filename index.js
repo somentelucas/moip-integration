@@ -24,6 +24,7 @@ app.get('/', function (req, res) {
     res.render('index.html');
 });
 
+// API para criar um pedido
 app.post('/create_order', function (req, res) {
 
     // Gerando identificadores únicos
@@ -103,6 +104,8 @@ app.post('/create_order', function (req, res) {
             res.send({ errors: err })
         }).catch(console.error.bind(console));
 });
+
+// API para criar um pagamento
 app.post('/create_payment', function (req, res) {
 
     var holder = req.body.holder;
@@ -160,20 +163,12 @@ app.post('/create_payment', function (req, res) {
         }).catch(console.error.bind(console));
 });
 
+// API para receber webhooks
 app.post('/webhooks', function (req, res) {
     const event = req.body.event;
     const resource = req.body.resource;
 
-    console.log('===================');
-    console.log('RECEIVED A WEBHOOK');
-    console.log('===================');
-    console.log('\n\n\n');
-    console.log(req.body.event);
-    console.log(req.body.resource.payment.id);
-    console.log(req.body.resource.payment.status);
-    console.log(req.body.resource.payment.events);
-    console.log('\n\n\n');
-
+    // Ao receber um webhook o servidor transmite o conteúdo do webhook para o client através de websocket (socket.io)
     io.sockets.emit('webhook', {
         event: event,
         paymentID: resource.payment.id,

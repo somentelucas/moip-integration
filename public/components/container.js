@@ -168,7 +168,8 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService, $timeout) =
 
                 // Listener para websocket de webhook
                 socket.on('webhook', (args) => {
-                    console.log(args);
+
+                    // Caso o pagamento tiver sido autorizado, exibir mensagem de sucesso
                     if (args.paymentID === $scope.validatingPaymentID && args.event === 'PAYMENT.AUTHORIZED') {
                         $timeout(() => {
                             $scope.validatingPaymentID = null;
@@ -176,6 +177,7 @@ module.exports = ($rootScope, $mdDialog, ApiService, ProductService, $timeout) =
                         });
                     }
 
+                    // Caso o pagamento tiver sido cancelado, exibir mensagem de falha
                     if (args.paymentID === $scope.validatingPaymentID && args.event === 'PAYMENT.CANCELLED') {
                         $timeout(() => {
                             $scope.validatingPaymentID = null;
